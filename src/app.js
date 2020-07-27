@@ -1,6 +1,5 @@
 import React from "react";
-import { Route, NavLink } from "react-router-dom";
-import AuthPage from "./components/routes/auth";
+import { NavLink } from "react-router-dom";
 
 function App() {
   return (
@@ -19,9 +18,6 @@ function App() {
           </li>
         </ul>
       </nav>
-      <section>
-        <Route path="/auth" component={AuthPage} />
-      </section>
     </div>
   );
 }
