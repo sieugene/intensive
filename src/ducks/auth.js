@@ -1,6 +1,9 @@
 import { Record } from "immutable";
-import { call, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery, all, take } from "redux-saga/effects";
 import { appName } from "./../config";
+import apiService from "./../api/api";
+import { eventChannel } from "redux-saga";
+import { useSelector } from "react-redux";
 /**
  * Constants
  * */
@@ -12,6 +15,7 @@ export const SIGNUP_START = `${prefix}/SIGNUP_START`;
 export const SIGNUP_ERROR = `${prefix}/SIGNUP_ERROR`;
 export const SIGNUP_SUCCESS = `${prefix}/SIGNUP_SUCCESS`;
 export const SIGNUP_END = `${prefix}/SIGNUP_END`;
+export const SIGN_IN_SUCCESS = `${prefix}/SIGN_IN_SUCCESS`;
 
 /**
  * Reducer
@@ -50,6 +54,11 @@ export const userSelector = (state) => state[moduleName].user;
  *
  */
 
+export const useAuthorized = () => {
+  const user = useSelector(userSelector);
+  return !!user;
+};
+
 /**
  * Action Creators
  *
@@ -78,16 +87,52 @@ export const setSignUpError = (error) => ({
   error,
 });
 
+// export const signInSuccess = () => ({
+//   type: SIGN_IN_SUCCESS
+// })
+
 /**
  * Sagas
  *
  */
 
+
+export const createAuthChanel = () => {
+  return eventChannel((emit) => apiService.onAuthChange((user) => emit({ user })));
+};
+
+export const syncAuthState = function* () {
+  const chanel = yield call(createAuthChanel);
+  while (true) {
+    const { user } = yield take(chanel);
+    if (user) {
+      yield put({
+        type: SIGNUP_SUCCESS,
+        user,
+      });
+    } else {
+      console.log('sasat')
+      // yield put({
+      //   type: SIGN_OUT_SUCCESS,
+      // });
+    }
+  }
+};
+
 export function* signUpSagaWorker({ values }) {
-  return ''
+  try {
+    yield put(signUpStart());
+    const data = yield call(apiService.signUp, values.email, values.password);
+    yield put(signUpSuccess(data.user));
+    yield put(signUpEnd());
+  } catch (error) {
+    yield put(signUpEnd());
+    yield put(setSignUpError(error));
+  }
+  return "";
   // `LOGIC LOGIN`;
 }
 
 export function* signUpSagaWatcher() {
-  yield takeEvery(SIGN_UP_REQUEST, signUpSagaWorker);
+  yield all([call(syncAuthState), takeEvery(SIGN_UP_REQUEST, signUpSagaWorker)]);
 }
