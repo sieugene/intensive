@@ -136,3 +136,5 @@ export function* signUpSagaWorker({ values }) {
 export function* signUpSagaWatcher() {
   yield all([call(syncAuthState), takeEvery(SIGN_UP_REQUEST, signUpSagaWorker)]);
 }
+
+/*test*/
