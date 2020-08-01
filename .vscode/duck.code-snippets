@@ -1,0 +1,52 @@
+{
+	"УТКИ": {
+	   "prefix": "duck",
+	   "body": [
+			"import { Record } from 'immutable';",
+			"/**",
+			" * Constants",
+			"* */",
+			"export const moduleName = 'auth';",
+			"export const appName = 'app';",
+			"const prefix = `${appName}/${moduleName}`;",
+			"",
+			"export const ACTION = `${prefix}/ACTION`;",
+			"",
+			"/**",
+			"* Reducer",
+			 "* */",
+			"export const ReducerRecord = Record({",
+			"",
+			"});",
+			"",
+			"export default function reducer(state = new ReducerRecord(), action) {",
+			"",
+			  "switch (type) {", 
+				"default:",
+				  "return state;",
+			  "}",
+			"}",
+			
+			"/**",
+			" * Selectros",
+			 "*/",
+			
+			
+			"/**",
+			" * Custom Hooks",
+			 "*/",
+			
+			
+			"/**",
+			" * Action Creators",
+			 "* */",
+			
+			
+			"/**",
+			" * Sagas",
+			 "*/"
+	   ],
+	   "description": "redux ducks"
+	}
+ 
+ }
