@@ -16,6 +16,7 @@ export const SIGNUP_ERROR = `${prefix}/SIGNUP_ERROR`;
 export const SIGNUP_SUCCESS = `${prefix}/SIGNUP_SUCCESS`;
 export const SIGNUP_END = `${prefix}/SIGNUP_END`;
 export const SIGN_IN_SUCCESS = `${prefix}/SIGN_IN_SUCCESS`;
+export const TOGGLE_INIT = `${prefix}/TOGGLE_INIT`;
 
 /**
  * Reducer
@@ -26,6 +27,7 @@ export const ReducerRecord = Record({
   user: null,
   loading: false,
   error: null,
+  init: false
 });
 
 export default function reducer(state = new ReducerRecord(), action) {
@@ -36,10 +38,13 @@ export default function reducer(state = new ReducerRecord(), action) {
       return state.set("loading", false).set("user", action.user);
     case SIGNUP_ERROR:
       return state.set("error", action.error);
-    default:
-      return state;
+    case TOGGLE_INIT: 
+      return state.set("init", true)
     case SIGNUP_END:
       return state.set("loading", false);
+
+    default:
+      return state;
   }
 }
 
@@ -48,6 +53,8 @@ export default function reducer(state = new ReducerRecord(), action) {
  *
  */
 export const userSelector = (state) => state[moduleName].user;
+
+export const initSelector = (state) => state[moduleName].init
 
 /**
  * Custom Hooks
@@ -87,6 +94,10 @@ export const setSignUpError = (error) => ({
   error,
 });
 
+export const toggleInit = () => ({
+  type: TOGGLE_INIT
+})
+
 // export const signInSuccess = () => ({
 //   type: SIGN_IN_SUCCESS
 // })
@@ -110,8 +121,9 @@ export const syncAuthState = function* () {
         type: SIGNUP_SUCCESS,
         user,
       });
+      yield put(toggleInit())
     } else {
-      console.log('sasat')
+      yield put(toggleInit())
       // yield put({
       //   type: SIGN_OUT_SUCCESS,
       // });
