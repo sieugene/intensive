@@ -1,26 +1,32 @@
 import React from 'react'
 import { useFormik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { addTodoRequest } from './../../ducks/todo';
 
 const TodoForm = (props) => {
+  const dispatch = useDispatch()
     const formik = useFormik({
         initialValues: {
-          email: '',
+          title: '',
         },
         onSubmit: values => {
-          alert(JSON.stringify(values, null, 2));
+          let todo = {
+            title: values.title
+          }
+          dispatch(addTodoRequest(todo))
         },
       });
       return (
         <form onSubmit={formik.handleSubmit}>
-          <label htmlFor="email">Email Address</label>
+          <label htmlFor="title">Title: </label>
           <input
-            id="email"
-            name="email"
-            type="email"
+            id="title"
+            name="title"
+            type="text"
             onChange={formik.handleChange}
-            value={formik.values.email}
+            value={formik.values.title}
           />
-          <button type="submit">Submit</button>
+          <button type="submit">Add</button>
         </form>
       )
 }
