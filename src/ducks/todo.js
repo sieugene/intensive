@@ -128,9 +128,11 @@ export const syncTodosWorker = function* () {
   }
 };
 
-export function* addTodoWorker({ todo }) {
+export function* addTodoWorker({ todo,id }) {
   try {
     yield call(apiService.addTodo, todo);
+    //don't put this only for test file
+    yield addTodo(id,todo)
   } catch (error) {
     yield put(failTodos(error));
   }
