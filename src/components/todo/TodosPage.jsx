@@ -2,7 +2,7 @@ import React from "react";
 import TodoList from "./TodoList";
 import TodoForm from "./TodoForm";
 import { connect } from "react-redux";
-import { withAuth } from './../HOCS/IsAuth';
+import withAuth from "../HOCS/IsAuth";
 
 
 

@@ -16,16 +16,16 @@ const TodoList = (props) => {
   }, [stableDispatch]);
 
   if (loading) {
-    return "loading";
+    return <div className='load'>loading</div>;
   }
   return (
     <div>
       {todos.length >= 1 &&
         todos.map((t) => {
           return (
-            <ul key={t.id}>
-              <li>Title:{t.title}</li>
-              <li>Date:{t.when}</li>
+            <ul key={t.id} className='list'>
+              <li className='title'>Title:{t.title}</li>
+              <li className='date'>Date:{t.when}</li>
             </ul>
           );
         })}
