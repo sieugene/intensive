@@ -3,7 +3,6 @@ import "firebase/auth";
 import "firebase/firestore";
 import { firebaseConfig } from "./../config";
 
-
 class ApiService {
   constructor(firebaseConfig) {
     this.fb = firebase.initializeApp(firebaseConfig);
@@ -29,6 +28,5 @@ function processFbCollection(collection) {
     id: snapshot.id,
   }));
 }
-
 
 export default new ApiService(firebaseConfig);

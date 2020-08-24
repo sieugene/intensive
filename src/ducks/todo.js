@@ -113,7 +113,9 @@ export function* fetchTodosWorker() {
 }
 
 export const createTodosChannel = () => {
-  return eventChannel((emit) => apiService.onTodosChange((data) => emit({ data })));
+  return eventChannel((emit) =>
+    apiService.onTodosChange((data) => emit({ data }))
+  );
 };
 
 export const syncTodosWorker = function* () {
@@ -123,16 +125,15 @@ export const syncTodosWorker = function* () {
     if (data) {
       yield put(successTodos(data));
     } else {
-    
     }
   }
 };
 
-export function* addTodoWorker({ todo,id }) {
+export function* addTodoWorker({ todo, id }) {
   try {
     yield call(apiService.addTodo, todo);
     //don't put this only for test file
-    yield addTodo(id,todo)
+    yield addTodo(id, todo);
   } catch (error) {
     yield put(failTodos(error));
   }

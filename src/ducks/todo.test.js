@@ -18,8 +18,8 @@ function* mySaga() {
   try {
     yield call(api, todo);
     yield put(someAction);
-  }catch{
-      //nothing
+  } catch {
+    //nothing
   }
 }
 

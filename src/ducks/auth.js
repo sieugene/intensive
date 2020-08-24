@@ -27,7 +27,7 @@ export const ReducerRecord = Record({
   user: null,
   loading: false,
   error: null,
-  init: false
+  init: false,
 });
 
 export default function reducer(state = new ReducerRecord(), action) {
@@ -38,8 +38,8 @@ export default function reducer(state = new ReducerRecord(), action) {
       return state.set("loading", false).set("user", action.user);
     case SIGNUP_ERROR:
       return state.set("error", action.error);
-    case TOGGLE_INIT: 
-      return state.set("init", true)
+    case TOGGLE_INIT:
+      return state.set("init", true);
     case SIGNUP_END:
       return state.set("loading", false);
 
@@ -54,7 +54,7 @@ export default function reducer(state = new ReducerRecord(), action) {
  */
 export const userSelector = (state) => state[moduleName].user;
 
-export const initSelector = (state) => state[moduleName].init
+export const initSelector = (state) => state[moduleName].init;
 
 /**
  * Custom Hooks
@@ -95,8 +95,8 @@ export const setSignUpError = (error) => ({
 });
 
 export const toggleInit = () => ({
-  type: TOGGLE_INIT
-})
+  type: TOGGLE_INIT,
+});
 
 // export const signInSuccess = () => ({
 //   type: SIGN_IN_SUCCESS
@@ -107,9 +107,10 @@ export const toggleInit = () => ({
  *
  */
 
-
 export const createAuthChanel = () => {
-  return eventChannel((emit) => apiService.onAuthChange((user) => emit({ user })));
+  return eventChannel((emit) =>
+    apiService.onAuthChange((user) => emit({ user }))
+  );
 };
 
 export const syncAuthState = function* () {
@@ -121,9 +122,9 @@ export const syncAuthState = function* () {
         type: SIGNUP_SUCCESS,
         user,
       });
-      yield put(toggleInit())
+      yield put(toggleInit());
     } else {
-      yield put(toggleInit())
+      yield put(toggleInit());
       // yield put({
       //   type: SIGN_OUT_SUCCESS,
       // });
@@ -146,7 +147,10 @@ export function* signUpSagaWorker({ values }) {
 }
 
 export function* signUpSagaWatcher() {
-  yield all([call(syncAuthState), takeEvery(SIGN_UP_REQUEST, signUpSagaWorker)]);
+  yield all([
+    call(syncAuthState),
+    takeEvery(SIGN_UP_REQUEST, signUpSagaWorker),
+  ]);
 }
 
 /*test2*/
