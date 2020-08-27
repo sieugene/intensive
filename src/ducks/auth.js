@@ -11,12 +11,15 @@ export const moduleName = "auth";
 const prefix = `${appName}/${moduleName}`;
 
 export const SIGN_UP_REQUEST = `${prefix}/SIGN_UP_REQUEST`;
+export const SIGN_IN_REQUEST = `${prefix}/SIGN_IN_REQUEST`;
 export const SIGNUP_START = `${prefix}/SIGNUP_START`;
 export const SIGNUP_ERROR = `${prefix}/SIGNUP_ERROR`;
 export const SIGNUP_SUCCESS = `${prefix}/SIGNUP_SUCCESS`;
 export const SIGNUP_END = `${prefix}/SIGNUP_END`;
 export const SIGN_IN_SUCCESS = `${prefix}/SIGN_IN_SUCCESS`;
 export const TOGGLE_INIT = `${prefix}/TOGGLE_INIT`;
+export const SIGN_OUT = `${prefix}/SIGN_OUT`;
+export const SIGN_OUT_REQUEST = `${prefix}/SIGN_OUT_REQUEST`;
 
 /**
  * Reducer
@@ -42,7 +45,8 @@ export default function reducer(state = new ReducerRecord(), action) {
       return state.set("init", true);
     case SIGNUP_END:
       return state.set("loading", false);
-
+    case SIGN_OUT:
+      return state.set("user", null).set("init", false);
     default:
       return state;
   }
@@ -76,6 +80,11 @@ export const signUpRequest = (values) => ({
   values,
 });
 
+export const signInRequest = (values) => ({
+  type: SIGN_IN_REQUEST,
+  values,
+});
+
 export const signUpStart = () => ({
   type: SIGNUP_START,
 });
@@ -96,6 +105,14 @@ export const setSignUpError = (error) => ({
 
 export const toggleInit = () => ({
   type: TOGGLE_INIT,
+});
+
+export const signOutAC = () => ({
+  type: SIGN_OUT,
+});
+
+export const signOutRequest = () => ({
+  type: SIGN_OUT_REQUEST,
 });
 
 // export const signInSuccess = () => ({
@@ -146,10 +163,33 @@ export function* signUpSagaWorker({ values }) {
   // `LOGIC LOGIN`;
 }
 
+export function* signInSagaWorker({ values }) {
+  try {
+    yield put(signUpStart());
+    const data = yield call(apiService.signIn, values.email, values.password);
+    yield put(signUpSuccess(data.user));
+    yield put(signUpEnd());
+  } catch (error) {
+    yield put(signUpEnd());
+    yield put(setSignUpError(error));
+  }
+  return "";
+  // `LOGIC LOGIN`;
+}
+
+export function* signOutWorker() {
+  try {
+    yield call(apiService.signOut);
+    yield put(signOutAC());
+  } catch (error) {}
+}
+
 export function* signUpSagaWatcher() {
   yield all([
     call(syncAuthState),
     takeEvery(SIGN_UP_REQUEST, signUpSagaWorker),
+    takeEvery(SIGN_IN_REQUEST, signInSagaWorker),
+    takeEvery(SIGN_OUT_REQUEST, signOutWorker),
   ]);
 }
 

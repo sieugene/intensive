@@ -1,0 +1,28 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+.header {
+  ul {
+    margin: 0;
+    height: 100%;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    li {
+      list-style-type: none;
+      margin-left: 20px;
+      color: white;
+      cursor: pointer;
+      a {
+        color: white;
+        text-decoration: none;
+        &:hover {
+          opacity: 0.75;
+        }
+      }
+    }
+  }
+  background: black;
+  height: 30px;
+}

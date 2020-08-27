@@ -9,9 +9,15 @@ class ApiService {
   }
   signUp = (email, password) =>
     this.fb.auth().createUserWithEmailAndPassword(email, password);
+  signIn = (email, password) =>
+    this.fb.auth().signInWithEmailAndPassword(email, password);
+
   getTodosCollection = () =>
     this.fb.firestore().collection("todos").get().then(processFbCollection);
   addTodo = (data) => this.fb.firestore().collection("todos").add(data);
+  signOut = () => {
+    this.fb.auth().signOut();
+  };
 
   onTodosChange = (callback) =>
     this.fb
