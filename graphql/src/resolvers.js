@@ -1,0 +1,34 @@
+const eventsMap = require("../mocks/events");
+const people = require("../mocks/people");
+//для проверки фильтра можно вписать
+//allEvents(filter: "VOXXED")
+const resolvers = {
+  Query: {
+    allEvents: (_, { filter }) => {
+      return makeAsync(
+        filter
+          ? Object.values(eventsMap).filter((event) =>
+              event.title.includes(filter)
+            )
+          : Object.values(eventsMap)
+      );
+    },
+  },
+  //если запрашиваем id , то вернем это, т.к. иначе называется в моке
+  Event: {
+    id: (obj) => obj._id,
+    //добавили поле people и тут эмулируем запрос в иное место за ними
+    people: (obj) =>
+      people.filter(
+        (person) => obj.peopleIds && obj.peopleIds.includes(person._id)
+      ),
+  },
+  Person: {
+    id: (obj) => obj._id,
+  },
+};
+function makeAsync(data, timeout = 1000) {
+  return new Promise((resolve) => setTimeout(() => resolve(data), timeout));
+}
+
+module.exports = resolvers;
