@@ -9,6 +9,10 @@ const EventForm = ({event}) => {
         variables: {
             id: event.id,
             title: title
+        },
+        //применяет сразу изменения
+        optimisticResponse: {
+            renameEvent: {"id": event.id,"title": title, "__typename": "Event"}
         }
     })
     const handleSubmit = (e) => {
