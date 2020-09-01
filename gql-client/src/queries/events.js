@@ -5,6 +5,13 @@ export const allEvenetsQuery = gql`
     allEvents(filter: $filter) {
       title
       id
+    }
+  }
+`;
+
+export const eventQuery = gql`
+  query Event($id: String!) {
+    event(id: $id) {
       url
     }
   }

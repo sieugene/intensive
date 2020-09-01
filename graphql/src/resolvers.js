@@ -13,6 +13,9 @@ const resolvers = {
           : Object.values(eventsMap)
       );
     },
+    event: (_,{id}) => {
+      return makeAsync(eventsMap[id])
+    }
   },
   //если запрашиваем id , то вернем это, т.к. иначе называется в моке
   Event: {

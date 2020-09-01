@@ -14,7 +14,8 @@ const typeDefs = gql`
         email: String
     }
   type Query {
-    allEvents(filter:String): [Event]
+    allEvents(filter:String): [Event],
+    event(id: String!): Event
   }
 `;
 module.exports = typeDefs;
