@@ -1,31 +1,20 @@
 import React from "react";
 import { useState } from "react";
-import { eventQuery } from "../queries/events";
-import { useQuery } from '@apollo/client';
+import FetchEvent from './FetchEvent';
+import EventForm from './Event-form';
 
 
 const Event = (props) => {
   const [open, setOpen] = useState(false);
+  const [openEdit,setEdit] = useState(false)
   return (
-    <div>
+    <div style={{border: "1px solid black",margin: "20px"}}>
       <h4 onClick={() => setOpen(!open)}>title: {props.title}</h4>
+      <p onClick={() => {setEdit(!openEdit)}} style={{cursor: "pointer"}}><b>редактировать</b> название</p>
+      {openEdit ? <EventForm event={props}/> : ''}
       {open ? <FetchEvent id={props.id}/> : ""}
     </div>
   );
 };
-
-const FetchEvent = (props) => {
-    const { data, loading } = useQuery(eventQuery, {
-        variables: { id: props.id },
-      });
-    if(!data || loading){
-        return <div>loading</div>
-    }   
-    return(
-        <div>
-            url: {data.event.url}
-        </div>
-    )
-}
 
 export default Event;

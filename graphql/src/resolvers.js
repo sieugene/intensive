@@ -17,6 +17,12 @@ const resolvers = {
       return makeAsync(eventsMap[id])
     }
   },
+  Mutation: {
+    renameEvent: (_,{id, title}) => {
+        eventsMap[id].title = title
+        return makeAsync(eventsMap[id])
+    }
+  },
   //если запрашиваем id , то вернем это, т.к. иначе называется в моке
   Event: {
     id: (obj) => obj._id,

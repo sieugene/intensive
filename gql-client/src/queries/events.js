@@ -16,3 +16,12 @@ export const eventQuery = gql`
     }
   }
 `;
+
+export const RenameEventMutation = gql`
+  mutation renameEventMutation($id: ID!, $title: String!){
+    renameEvent(id: $id,title: $title){
+      id
+      title
+    }
+  }
+`
