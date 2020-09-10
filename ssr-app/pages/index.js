@@ -1,18 +1,19 @@
 import App from "../components/App";
 import { initializeApollo } from "../lib/apolloClient";
-import EventList from './../components/Event-list';
-import { allEvenetsQuery } from './../queries/events';
+import EventList from "./../components/Event-list";
+import { allEvenetsQuery } from "./../queries/events";
 
-
-const IndexPage = (props) => (
-  <App>
-    <div className="App">
-      {props.children}
-      <div>Events</div>
-      <EventList data={props.data}/>
-    </div>
-  </App>
-);
+const IndexPage = (props) => {
+  return (
+    <App>
+      <div className="App">
+        {props.children}
+        <div>Events</div>
+        <EventList data={props.data} />
+      </div>
+    </App>
+  );
+};
 
 export async function getStaticProps() {
   const apolloClient = initializeApollo();
@@ -24,7 +25,7 @@ export async function getStaticProps() {
     props: {
       initialApolloState: apolloClient.cache.extract(),
       data,
-      loading
+      loading,
     },
     revalidate: 1,
   };

@@ -12,6 +12,16 @@ const EventList = (props) => {
     setFilter(e.target.value);
     search();
   };
+  const mapEvents = (events) => {
+    return (
+      events &&
+      events.allEvents.length >= 1 &&
+      events.allEvents.map((event) => {
+        //updateEvent - такой же костыль из-за статики
+        return <Event {...event} key={event.id} updateEvent={search} />;
+      })
+    );
+  };
   if (!props.data || props.loading) {
     return <div>loading</div>;
   }
@@ -26,16 +36,7 @@ const EventList = (props) => {
         }}
         value={filter}
       />
-      {data
-        ? data.allEvents.length >= 1 &&
-          data.allEvents.map((event) => {
-            return <Event {...event} key={event.id} />;
-          })
-        : props.data &&
-          props.data.allEvents.length >= 1 &&
-          props.data.allEvents.map((event) => {
-            return <Event {...event} key={event.id} />;
-          })}
+      {data ? mapEvents(data) : mapEvents(props.data)}
     </div>
   );
 };

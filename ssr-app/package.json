@@ -4,10 +4,12 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "debug": "node inspect --inspect .vscode/launch.json"
   },
   "dependencies": {
     "@apollo/client": "3.1.1",
+    "cross-env": "^7.0.2",
     "graphql": "^15.3.0",
     "next": "latest",
     "prop-types": "^15.6.2",

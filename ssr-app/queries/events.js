@@ -13,6 +13,8 @@ export const eventQuery = gql`
   query Event($id: String!) {
     event(id: $id) {
       url
+      title
+      id
     }
   }
 `;
